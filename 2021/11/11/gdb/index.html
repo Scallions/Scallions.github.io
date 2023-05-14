@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hexo.scallions.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="gdb是一个方便的终端调试工具，能够调试多种语言代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb简单教程">
+<meta property="og:url" content="https://hexo.scallions.cn/2021/11/11/gdb/index.html">
+<meta property="og:site_name" content="Scallions">
+<meta property="og:description" content="gdb是一个方便的终端调试工具，能够调试多种语言代码">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-11T02:06:16.000Z">
+<meta property="article:modified_time" content="2021-11-11T02:06:16.000Z">
+<meta property="article:author" content="Scallions">
+<meta property="article:tag" content="gdb">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hexo.scallions.cn/2021/11/11/gdb/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>gdb简单教程 | Scallions</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Scallions</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hexo.scallions.cn/2021/11/11/gdb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Scallions">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Scallions">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gdb简单教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-11 10:06:16" itemprop="dateCreated datePublished" datetime="2021-11-11T10:06:16+08:00">2021-11-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>gdb是一个方便的终端调试工具，能够调试多种语言代码</p>
+<span id="more"></span>
+<p>导图：</p>
+<pre class="mermaid">graph LR
+GDB ---&gt; 编译debug版本程序
+GDB ---&gt; 启动调试界面
+GDB ---&gt; 调试
+调试 ---&gt; 设置断点
+调试 ---&gt; 执行
+调试 ---&gt; 查看信息
+查看信息 ---&gt; 变量
+查看信息 ---&gt; 调用堆栈</pre>
+<p>编译为debug版本，需要在gcc是使用<code>-g</code>参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc bugging.c -o bugging -g</span><br></pre></td></tr></table></figure>
+<p>启动gdb进入调试界面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb bugging</span><br></pre></td></tr></table></figure>
+<p>gdb常用命令表</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>简写形式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>list</td>
+<td>l</td>
+<td>查看源码</td>
+</tr>
+<tr class="even">
+<td>backtrace</td>
+<td>bt，where</td>
+<td>打印函数栈信息</td>
+</tr>
+<tr class="odd">
+<td>next</td>
+<td>n</td>
+<td>执行下一行</td>
+</tr>
+<tr class="even">
+<td>finish</td>
+<td></td>
+<td>运行到函数结束</td>
+</tr>
+<tr class="odd">
+<td>continue</td>
+<td>c</td>
+<td>继续运行</td>
+</tr>
+<tr class="even">
+<td>break</td>
+<td>b</td>
+<td>设置断点</td>
+</tr>
+<tr class="odd">
+<td>info breakpoints</td>
+<td></td>
+<td>显示断点信息</td>
+</tr>
+<tr class="even">
+<td>delete</td>
+<td>d</td>
+<td>删除断点</td>
+</tr>
+<tr class="odd">
+<td>print</td>
+<td>p</td>
+<td>打印表达式信息</td>
+</tr>
+<tr class="even">
+<td>run</td>
+<td>r</td>
+<td>启动程序</td>
+</tr>
+<tr class="odd">
+<td>until</td>
+<td>u</td>
+<td>执行到指定行</td>
+</tr>
+<tr class="even">
+<td>info</td>
+<td>i</td>
+<td>显示信息</td>
+</tr>
+<tr class="odd">
+<td>help</td>
+<td>h</td>
+<td>帮助信息</td>
+</tr>
+</tbody>
+</table>
+<p>可以通过<code>!shell</code>执行shell命令</p>
+<h1 id="查看源码">查看源码</h1>
+<p>list（l）查看源码信息，主要有以下几种方式</p>
+<ul>
+<li>list 行号，显示某一行附近的代码</li>
+<li>list 文件名：行号，显示某一个文件某一行附近代码</li>
+<li>list 函数名，显示某个函数附近代码</li>
+<li>list 文件名：函数名，显示某个文件某个函数</li>
+</ul>
+<h1 id="断点">断点</h1>
+<h2 id="设置断点">设置断点</h2>
+<p>break（b）用来设置断点，常用操作如下</p>
+<ul>
+<li>break 行号</li>
+<li>break 文件名：行号</li>
+<li>break 函数名</li>
+<li>break 文件名：函数名</li>
+</ul>
+<h2 id="查看断点信息">查看断点信息</h2>
+<p>info breakpoints 查看断点信息，主要返回以下信息</p>
+<ul>
+<li>Num 断点标号，可以作为delete、enable、disable命令的参数控制断点</li>
+<li>Type 断点类型</li>
+<li>Disp 代表断点命中后是删除（del）还是保留（keep），或者关闭（dis）</li>
+<li>Enb 表示断点是enable（y），还是disable（n）</li>
+<li>Address 表示断点的虚拟内存的地址</li>
+<li>What 表示断点在源文件中信息</li>
+</ul>
+<h2 id="删除断点">删除断点</h2>
+<p>delete Num 删除指定断点，delete 删除所有断点</p>
+<h2 id="关闭和启用断点">关闭和启用断点</h2>
+<p>(disable|enable) [Num]</p>
+<h2 id="断点的方式">断点的方式</h2>
+<ul>
+<li>enable once Num，断点hit一次后关闭</li>
+<li>enable delete Num，断点hit一次后删除</li>
+</ul>
+<h2 id="断点调试的一些命令">断点调试的一些命令</h2>
+<ol type="1">
+<li>打印变量
+<ul>
+<li>info locals 打印所有局部变量</li>
+<li>print 变量或者表达式</li>
+</ul></li>
+<li>启动程序
+<ul>
+<li>run</li>
+<li>run 参数，会传递给main函数</li>
+</ul></li>
+<li>单步命令
+<ul>
+<li>next 单步执行，next N执行N步</li>
+<li>step 单步执行会进入函数内部，step N执行N次</li>
+<li>finish 执行到当前函数结束</li>
+<li>continue 执行到下个断点</li>
+<li>until N 执行到某一行</li>
+</ul></li>
+</ol>
+<h2 id="函数栈">函数栈</h2>
+<p>进程在内存空间会拥有一块叫做 stack 的区域，函数内部的局部变量、函数之间调用时参数的传递和返回值等等都会用到栈这种数据结构。</p>
+<ul>
+<li><p>info proc mappings 可以查看进程的内存分布情况</p></li>
+<li><p>backtrace 查看函数调用栈的情况</p>
+<blockquote>
+<p>backtrace、where、info stack</p>
+<p>这三个命令都能查看函数调用情况</p>
+</blockquote>
+<blockquote>
+<p>backtrace full、where full、info stack full</p>
+<p>这三个命令查看函数调用情况的同时，打印所有局部变量的值</p>
+</blockquote></li>
+<li><p>stack frame</p>
+<blockquote>
+<p>按调用顺序排，越大越先调用</p>
+</blockquote></li>
+<li><p>info frame Num</p>
+<blockquote>
+<p>查看某个函数栈的详细信息，寄存器、程序计数器等</p>
+</blockquote></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gdb/" rel="tag"># gdb</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/01/webpack/" rel="prev" title="webpack前端项目搭建">
+      <i class="fa fa-chevron-left"></i> webpack前端项目搭建
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/21/app-recommend/" rel="next" title="app-recommend">
+      app-recommend <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  
+  <div class="comments">
+  <script src="https://utteranc.es/client.js" repo="Scallions/Scallions.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
+  </div>
+  
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%BA%90%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">查看源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%AD%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">断点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9"><span class="nav-number">2.1.</span> <span class="nav-text">设置断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%AD%E7%82%B9%E4%BF%A1%E6%81%AF"><span class="nav-number">2.2.</span> <span class="nav-text">查看断点信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%AD%E7%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">删除断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E5%92%8C%E5%90%AF%E7%94%A8%E6%96%AD%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">关闭和启用断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">2.5.</span> <span class="nav-text">断点的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E7%9A%84%E4%B8%80%E4%BA%9B%E5%91%BD%E4%BB%A4"><span class="nav-number">2.6.</span> <span class="nav-text">断点调试的一些命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%A0%88"><span class="nav-number">2.7.</span> <span class="nav-text">函数栈</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Scallions</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+<div id="poem_sentence"></div>
+<script type="text/javascript">
+  jinrishici.load(function(result) {
+    var sentence = document.querySelector("#poem_sentence")
+    var info = document.querySelector("#poem_info")
+    sentence.innerHTML = result.data.content + '    -- [' + result.data.origin.dynasty + ']' + result.data.origin.author + '《' + result.data.origin.title + '》'
+  });
+</script>
+
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scallions</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.staticfile.org/mathjax/3.1.2/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+
+  
+
+</body>
+</html>

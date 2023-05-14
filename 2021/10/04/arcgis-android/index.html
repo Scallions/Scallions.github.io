@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hexo.scallions.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Android Studio 项目配置 首先配置项目gradle 12345678allprojects {    repositories {        ...        maven {            url &#39;https:&#x2F;&#x2F;esri.jfrog.io&#x2F;artifactory&#x2F;arcgis&#39;        }    }}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arcgis android 开发">
+<meta property="og:url" content="https://hexo.scallions.cn/2021/10/04/arcgis-android/index.html">
+<meta property="og:site_name" content="Scallions">
+<meta property="og:description" content="Android Studio 项目配置 首先配置项目gradle 12345678allprojects {    repositories {        ...        maven {            url &#39;https:&#x2F;&#x2F;esri.jfrog.io&#x2F;artifactory&#x2F;arcgis&#39;        }    }}">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-04T06:38:53.000Z">
+<meta property="article:modified_time" content="2021-10-04T06:38:53.000Z">
+<meta property="article:author" content="Scallions">
+<meta property="article:tag" content="安卓">
+<meta property="article:tag" content="GIS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hexo.scallions.cn/2021/10/04/arcgis-android/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>arcgis android 开发 | Scallions</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Scallions</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hexo.scallions.cn/2021/10/04/arcgis-android/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Scallions">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Scallions">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          arcgis android 开发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-04 14:38:53" itemprop="dateCreated datePublished" datetime="2021-10-04T14:38:53+08:00">2021-10-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="android-studio-项目配置">Android Studio 项目配置</h2>
+<p>首先配置项目gradle<br>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">allprojects</span> {</span><br><span class="line">    <span class="keyword">repositories</span> {</span><br><span class="line">        ...</span><br><span class="line">        maven {</span><br><span class="line">            url <span class="string">'https://esri.jfrog.io/artifactory/arcgis'</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<span id="more"></span>
+<p>然后配置模块gradle<br>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">android {</span><br><span class="line">    buildFeatures {</span><br><span class="line">        viewBinding <span class="keyword">true</span></span><br><span class="line">    }</span><br><span class="line">    packagingOptions {</span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/DEPENDENCIES.txt'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/LICENSE.txt'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/NOTICE.txt'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/NOTICE'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/LICENSE'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/DEPENDENCIES'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/notice.txt'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/license.txt'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/dependencies.txt'</span></span><br><span class="line">        <span class="keyword">exclude</span> <span class="string">'META-INF/LGPL2.1'</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">dependencies</span> {</span><br><span class="line">	implementation <span class="string">'com.esri.arcgisruntime:arcgis-android:100.12.0'</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure><br>
+然后更改manifests<br>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_EXTERNAL_STORAGE"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span> /&gt;</span></span><br><span class="line">&lt;uses-feature</span><br><span class="line">	android:glEsVersion="0x00030000"</span><br><span class="line">	android:required="true" /&gt;</span><br><span class="line">&lt;application</span><br><span class="line">	android:allowBackup="true"</span><br><span class="line">	android:icon="@mipmap/ic_launcher"</span><br><span class="line">	android:label="@string/app_name"</span><br><span class="line">	android:roundIcon="@mipmap/ic_launcher_round"</span><br><span class="line">	android:supportsRtl="true"</span><br><span class="line">	android:theme="@style/Theme.TestArcGIS3D"&gt;</span><br><span class="line">	<span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".MainActivity"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">			<span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="三维部分">三维部分</h2>
+<h3 id="必要元素">必要元素</h3>
+<p>scene 和 camera<br>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> scene = ArcGISScene(Basemap.createImagery())</span><br><span class="line">sceneView.scene = scene</span><br><span class="line"><span class="keyword">val</span> cameraLocation = Point(<span class="number">86.5</span>, <span class="number">28.5</span>, <span class="number">15000.0</span>, SpatialReferences.getWgs84())</span><br><span class="line"><span class="comment">// Camera(location, heading, pitch, roll)</span></span><br><span class="line"><span class="keyword">val</span> camera = Camera(cameraLocation, <span class="number">344.0</span>, <span class="number">72.0</span>, <span class="number">0.0</span>)</span><br><span class="line"><span class="keyword">this</span>.camera = camera</span><br><span class="line">sceneView.setViewpointCamera(camera)</span><br></pre></td></tr></table></figure></p>
+<h3 id="加载自定义底图">加载自定义底图</h3>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> rasterFilePath = Environment.getExternalStorageDirectory().path + <span class="string">"/raster/google.tif"</span></span><br><span class="line"><span class="keyword">val</span> raster = Raster(rasterFilePath)</span><br><span class="line"><span class="keyword">val</span> rasterLayer = RasterLayer(raster)</span><br><span class="line"><span class="keyword">val</span> map = Basemap(rasterLayer)</span><br><span class="line">scene.basemap = map</span><br></pre></td></tr></table></figure>
+<h3 id="加载自定义dem">加载自定义dem</h3>
+<p>由于是loadable接口子类，需要设置回调来加载<br>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> path = Environment.getExternalStorageDirectory().path + <span class="string">"/raster/test.tif"</span></span><br><span class="line"><span class="keyword">val</span> filePaths = ArrayList&lt;String&gt;()</span><br><span class="line">filePaths.add(path)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">	with(RasterElevationSource(filePaths)) {</span><br><span class="line">		<span class="keyword">this</span>.addLoadStatusChangedListener { loadStatusChangedEvent -&gt;</span><br><span class="line">			<span class="keyword">if</span> ( loadStatusChangedEvent.newLoadStatus == LoadStatus.LOADED ){</span><br><span class="line">				sceneView.scene.baseSurface.elevationSources.add(<span class="keyword">this</span>)</span><br><span class="line">				Log.d(tag, <span class="string">"loaded dem"</span>)</span><br><span class="line">			} <span class="keyword">else</span> <span class="keyword">if</span> (loadStatusChangedEvent.newLoadStatus == LoadStatus.FAILED_TO_LOAD) {</span><br><span class="line">				Log.d(tag, <span class="string">"load dem failed"</span>)</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">this</span>.loadAsync()</span><br><span class="line">	}</span><br><span class="line">} <span class="keyword">catch</span> (e: IllegalAccessException) {</span><br><span class="line">	Log.d(tag, <span class="string">"load dem failed"</span>)</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<h3 id="添加点">添加点</h3>
+<p>有五种放置方式分别是<br>
+- DRAPED_FLAT<br>
+- DRAPED_BILLBOARDED<br>
+- RELATIVE<br>
+- ABSOLUTE<br>
+- RELATIVE_TO_SCENE<br>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> sceneRelatedPoint = Point(</span><br><span class="line">	<span class="number">86.5</span>,<span class="number">28.5</span>, <span class="number">70.0</span>,</span><br><span class="line">	<span class="keyword">this</span>.camera.location.spatialReference</span><br><span class="line">)</span><br><span class="line"><span class="keyword">val</span> triangleSymbol = SimpleMarkerSymbol(SimpleMarkerSymbol.Style.TRIANGLE, Color.RED, <span class="number">10f</span>)</span><br><span class="line"><span class="keyword">val</span> drapedFlatText = TextSymbol(</span><br><span class="line">	<span class="number">15F</span>, <span class="string">"DRAPED FLAT"</span>, Color.MAGENTA, TextSymbol.HorizontalAlignment.LEFT,</span><br><span class="line">	TextSymbol.VerticalAlignment.TOP</span><br><span class="line">).apply {</span><br><span class="line">	offsetY = <span class="number">20f</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">val</span> drapedFlatOverlay = GraphicsOverlay().apply {</span><br><span class="line">	sceneProperties.surfacePlacement = LayerSceneProperties.SurfacePlacement.DRAPED_FLAT</span><br><span class="line">	graphics.addAll(</span><br><span class="line">		arrayOf(</span><br><span class="line">			Graphic(surfaceRelatedPoint, triangleSymbol),</span><br><span class="line">			Graphic(surfaceRelatedPoint, drapedFlatText)</span><br><span class="line">		)</span><br><span class="line">	)</span><br><span class="line">}</span><br><span class="line">sceneView.graphicsOverlays.addAll(</span><br><span class="line">	arrayOf(</span><br><span class="line">		drapedFlatOverlay,</span><br><span class="line">	)</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>其他待完善</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%89%E5%8D%93/" rel="tag"># 安卓</a>
+              <a href="/tags/GIS/" rel="tag"># GIS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/25/run-vscode-server-on-old-linux/" rel="prev" title="在老版本linux上远程vscode开发">
+      <i class="fa fa-chevron-left"></i> 在老版本linux上远程vscode开发
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/05/svm/" rel="next" title="支持向量机">
+      支持向量机 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  
+  <div class="comments">
+  <script src="https://utteranc.es/client.js" repo="Scallions/Scallions.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
+  </div>
+  
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#android-studio-%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">Android Studio 项目配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">三维部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E8%A6%81%E5%85%83%E7%B4%A0"><span class="nav-number">2.1.</span> <span class="nav-text">必要元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BA%95%E5%9B%BE"><span class="nav-number">2.2.</span> <span class="nav-text">加载自定义底图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E8%87%AA%E5%AE%9A%E4%B9%89dem"><span class="nav-number">2.3.</span> <span class="nav-text">加载自定义dem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">添加点</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Scallions</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+<div id="poem_sentence"></div>
+<script type="text/javascript">
+  jinrishici.load(function(result) {
+    var sentence = document.querySelector("#poem_sentence")
+    var info = document.querySelector("#poem_info")
+    sentence.innerHTML = result.data.content + '    -- [' + result.data.origin.dynasty + ']' + result.data.origin.author + '《' + result.data.origin.title + '》'
+  });
+</script>
+
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scallions</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.staticfile.org/mathjax/3.1.2/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+
+  
+
+</body>
+</html>
